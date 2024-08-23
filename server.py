@@ -22,11 +22,12 @@ def sent_analyzer():
     text_to_analyze = request.args.get('textToAnalyze')
     # Pass the text to the sentiment_analyzer function and store the response
     response = emotion_detector(text_to_analyze)
-    # Extract the label and score from the response
-    #label = response['label']
-    #score = response['score']
-    # Return a formatted string with the sentiment label and score
-    return "For the given statement, the system response is 'anger': {}, 'disgust': {}, 'fear': {}, 'joy': {} and 'sadness': {}. The dominant emotion is {}.".format(response["anger"], response["disgust"], response["fear"], response["joy"], response["sadness"], response["dominant_emotion"])
+
+    if response['dominant_emotion'] is None:
+        return "Invalid text! Please try again!"
+    else:
+        # Return a formatted string with the sentiment label and score
+        return "For the given statement, the system response is 'anger': {}, 'disgust': {}, 'fear': {}, 'joy': {} and 'sadness': {}. The dominant emotion is {}.".format(response["anger"], response["disgust"], response["fear"], response["joy"], response["sadness"], response["dominant_emotion"])
 
 @app.route("/")
 def render_index_page():
